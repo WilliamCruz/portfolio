@@ -11,7 +11,39 @@
 |
 */
 
+// Route::get('/', function()
+// {
+// 	return 'hello';
+// });
+
+
+// Route::get('/sayhello/{name}', function($name)
+// {
+//     return "Hello, $name!";
+// });
+
+
+// Route::get('/sayhello/{name}', function($name)
+// {
+//     if ($name == "Chris")
+//     {
+//         return Redirect::to('/');
+//     }
+//     else
+//     {
+//         return "Hello, $name!";
+//     }
+// });
+
 Route::get('/', function()
 {
-	return View::make('hello');
+	return 'We are home.';
+});
+Route::get('/resume', function()
+{
+	return 'This is my resume.';
+});
+Route::get('/portfolio', function()
+{
+	return 'This is my portfolio.';
 });
