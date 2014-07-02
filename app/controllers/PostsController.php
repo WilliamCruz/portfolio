@@ -3,6 +3,18 @@
 Class PostsController extends \BaseController
 {
 
+
+
+	public function __construct()
+{
+    // call base controller constructor
+    parent::__construct();
+
+    // run auth filter before all methods on this controller except index and show
+    $this->beforeFilter('auth.basic', array('except' => array('index', 'show')));
+}
+
+
 	public function index()
 	{
 		$posts = Post::paginate(4);
