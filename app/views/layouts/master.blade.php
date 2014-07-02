@@ -15,8 +15,16 @@
     <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 <body>
-	<div class="container">
-    @yield('content')
+    <div class="container">
+        @if (Session::has('successMessage'))
+        <div class="alert alert-success">{{{ Session::get('successMessage') }}}</div>
+        @endif
+        @if (Session::has('errorMessage'))
+        <div class="alert alert-danger">{{{ Session::get('errorMessage') }}}</div>
+        @endif
+    	
+        @yield('content')
+        </div>
     </div>
 </body>
 </html>
