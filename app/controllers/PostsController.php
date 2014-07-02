@@ -17,8 +17,27 @@ Class PostsController extends \BaseController
 
 	public function store()
 	{
-		return $this->update(null);
-	}
+		$validator = Validator::make(Input::all(), Post::$rules);
+
+		if ($validator->fails())
+		{
+			// show error message
+			session::flash('errorMessage', 'Post Error: Review fields');
+
+			return Redirect::back()->withInput()->withErrors($validator);
+		}
+		else
+		{
+			$post = new Post();
+			$post->title = Input::get('title');
+			$post->body = Input::get('body');
+			$post->save();
+
+			session::flash('successMessage', 'Success');
+
+			return Redirect::action('PostsController@index');
+		}
+	}	
 
 
 	public function show($id)
@@ -40,7 +59,9 @@ Class PostsController extends \BaseController
 		$validator = Validator::make(Input::all(), Post::$rules);
 
 		if ($validator->fails())
-		{
+		{	
+			Session::flash('errorMessage', 'Edit Error: Review fields');
+
 			return Redirect::back()->withInput()->withErrors($validator);
 		}
 		else
@@ -48,7 +69,30 @@ Class PostsController extends \BaseController
 			$post->title = Input::get('title');
 			$post->body = Input::get('body');
 			$post->save();
+
+			Session::flash('successMessage', 'Edit was successful');
+
 			return Redirect::action('PostsController@index');
 		}
 	}
+
+	public function destroy($id)
+	{
+		$post = Post::findOrFail($id);
+		$post->delete();
+		Session::flash('successMessage', 'Post deleted successfully');
+
+		return Redirect::action('PostsController@index');
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
