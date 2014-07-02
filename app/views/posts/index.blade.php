@@ -13,8 +13,8 @@
 	@foreach ($posts as $post)
 	<tr>
 		<td>{{ link_to_action('PostsController@show', $post->title, array($post->id)) }}</td>
-		<td>{{{ $post->created_at }}}
-		<td>{{ link_to_action('PostsController@show', $post->body, array($post->id)) }}</td>
+		<td>{{{ $post->created_at->format('l, F jS Y @ h:i:s A') }}}</td>
+		<td>{{ link_to_action('PostsController@edit', 'Edit', array($post->id)) }}</td>
 	</tr>
 	@endforeach
 </table>
