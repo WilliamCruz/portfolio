@@ -16,8 +16,18 @@ Class PostsController extends \BaseController
 
 
 	public function index()
-	{
-		$posts = Post::paginate(4);
+	{	//search by title
+		$post = Post::with('user');
+
+		if (Input::has("search")) {
+			$search = Input::get('search');	
+			$posts = Post::where('title', 'LIKE', "%$search%");
+		} 
+		else
+		{
+			$posts = Post::orderBy('created_at', 'DESC')->paginate(4);	
+		}
+
 		return View::make('posts.index')->with('posts', $posts);
 	}
 
@@ -34,7 +44,7 @@ Class PostsController extends \BaseController
 		if ($validator->fails())
 		{
 			// show error message
-			session::flash('errorMessage', 'Post Error: Review fields');
+			Session::flash('errorMessage', 'Post Error: Review fields');
 
 			return Redirect::back()->withInput()->withErrors($validator);
 		}
