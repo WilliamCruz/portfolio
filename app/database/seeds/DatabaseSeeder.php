@@ -33,13 +33,18 @@ class UserTableSeeder extends Seeder {
 
 class PostTableSeeder extends Seeder {
 
+
     public function run()
     {
     	DB::table('posts')->delete();
 
+    	$user = User::first();
+
         for($i = 1; $i <= 10; $i++) {
         
 	        $post = new Post();
+	        // $post->user_id = $user->id;
+	        $post->user()->associate($user);
 	        $post->title = 'title' . '$i';
 	        $post->body = 'body' .'$i';
 	        $post->save();
