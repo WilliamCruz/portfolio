@@ -51,10 +51,18 @@ Class PostsController extends \BaseController
 		else
 		{
 			$post = new Post();
+			$post->first_name = Input::get('first_name');
+			$post->last_name = Input::get('last_name');
+			$post->role = Input::get('role');
 			$post->title = Input::get('title');
 			$post->body = Input::get('body');
 			$post->user_id = Auth::user()->id;
 			$post->save();
+
+			if (Input::hasFile('image') && Input::file('image')->isValid()) {
+				$post->addUploadedImage(Input::file('image'));
+				$post->save();
+			}
 
 			session::flash('successMessage', 'Success');
 
@@ -65,19 +73,19 @@ Class PostsController extends \BaseController
 
 	public function show($id)
 	{
-		$post = POST::find($id);
+		$post = Post::find($id);
 		return View::make('posts.show')->with('post', $post); 
 	}
 
 	public function edit ($id)
 	{
-		$post = POST::findOrFail($id);
+		$post = Post::findOrFail($id);
 		return View::make('posts.create-edit')->with('post', $post);
 	}
 
 	public function update ($id)
 	{
-		$post = POST::findOrFail($id);
+		$post = Post::findOrFail($id);
 
 		$validator = Validator::make(Input::all(), Post::$rules);
 
@@ -94,13 +102,13 @@ Class PostsController extends \BaseController
 			$post->save();
 
 			if (Input::hasFile('image') && Input::file('image')->isValid()) {
-				$post->addUploadedImage(Input::file('image')):
+				$post->addUploadedImage(Input::file('image'));
 				$post->save();
 			}
 
 			Session::flash('successMessage', 'Edit was successful');
 
-			return Redirect::action('PostsController@index');
+			return Redirect::action('PostsController@show', $post->id);
 		}
 	}
 
@@ -113,14 +121,3 @@ Class PostsController extends \BaseController
 		return Redirect::action('PostsController@index');
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
