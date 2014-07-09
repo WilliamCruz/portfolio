@@ -5,7 +5,7 @@ Class PostsController extends \BaseController
 
 
 
-	public function __construct()
+    public function __construct()
 {
     // call base controller constructor
     parent::__construct();
@@ -15,109 +15,106 @@ Class PostsController extends \BaseController
 }
 
 
-	public function index()
-	{	//search by title
-		$post = Post::with('user');
+    public function index()
+    {   //search by title
+        $post = Post::with('user');
 
-		if (Input::has("search")) {
-			$search = Input::get('search');	
-			$posts = Post::where('title', 'LIKE', "%$search%");
-		} 
-		else
-		{
-			$posts = Post::orderBy('created_at', 'DESC')->paginate(4);	
-		}
+        if (Input::has("search")) {
+            $search = Input::get('search'); 
+            $posts = Post::where('title', 'LIKE', "%$search%");
+        } 
+        else
+        {
+            $posts = Post::orderBy('created_at', 'DESC')->paginate(4);  
+        }
 
-		return View::make('posts.index')->with('posts', $posts);
-	}
+        return View::make('posts.index')->with('posts', $posts);
+    }
 
-	public function create()
-	{
-		return View::make('posts.create-edit');
-	}
-
-
-	public function store()
-	{
-		$validator = Validator::make(Input::all(), Post::$rules);
-
-		if ($validator->fails())
-		{
-			// show error message
-			Session::flash('errorMessage', 'Post Error: Review fields');
-
-			return Redirect::back()->withInput()->withErrors($validator);
-		}
-		else
-		{
-			$post = new Post();
-			$post->first_name = Input::get('first_name');
-			$post->last_name = Input::get('last_name');
-			$post->role = Input::get('role');
-			$post->title = Input::get('title');
-			$post->body = Input::get('body');
-			$post->user_id = Auth::user()->id;
-			$post->save();
-
-			if (Input::hasFile('image') && Input::file('image')->isValid()) {
-				$post->addUploadedImage(Input::file('image'));
-				$post->save();
-			}
-
-			session::flash('successMessage', 'Success');
-
-			return Redirect::action('PostsController@index');
-		}
-	}	
+    public function create()
+    {
+        return View::make('posts.create-edit');
+    }
 
 
-	public function show($id)
-	{
-		$post = Post::find($id);
-		return View::make('posts.show')->with('post', $post); 
-	}
+    public function store()
+    {
+        $validator = Validator::make(Input::all(), Post::$rules);
 
-	public function edit ($id)
-	{
-		$post = Post::findOrFail($id);
-		return View::make('posts.create-edit')->with('post', $post);
-	}
+        if ($validator->fails())
+        {
+            // show error message
+            Session::flash('errorMessage', 'Post Error: Review fields');
 
-	public function update ($id)
-	{
-		$post = Post::findOrFail($id);
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
+        else
+        {
+            $post = new Post();
+            $post->title = Input::get('title');
+            $post->body = Input::get('body');
+            $post->user_id = Auth::user()->id;
+            $post->save();
 
-		$validator = Validator::make(Input::all(), Post::$rules);
+            if (Input::hasFile('image') && Input::file('image')->isValid()) {
+                $post->addUploadedImage(Input::file('image'));
+                $post->save();
+            }
 
-		if ($validator->fails())
-		{	
-			Session::flash('errorMessage', 'Edit Error: Review fields');
+            session::flash('successMessage', 'Success');
 
-			return Redirect::back()->withInput()->withErrors($validator);
-		}
-		else
-		{
-			$post->title = Input::get('title');
-			$post->body = Input::get('body');
-			$post->save();
+            return Redirect::action('PostsController@index');
+        }
+    }   
 
-			if (Input::hasFile('image') && Input::file('image')->isValid()) {
-				$post->addUploadedImage(Input::file('image'));
-				$post->save();
-			}
 
-			Session::flash('successMessage', 'Edit was successful');
+    public function show($id)
+    {
+        $post = Post::find($id);
+        return View::make('posts.show')->with('post', $post); 
+    }
 
-			return Redirect::action('PostsController@show', $post->id);
-		}
-	}
+    public function edit ($id)
+    {
+        $post = Post::findOrFail($id);
+        return View::make('posts.create-edit')->with('post', $post);
+    }
 
-	public function destroy($id)
-	{
-		$post = Post::findOrFail($id);
-		$post->delete();
-		Session::flash('successMessage', 'Post deleted successfully');
+    public function update ($id)
+    {
+        $post = Post::findOrFail($id);
 
-		return Redirect::action('PostsController@index');
-	}
+        $validator = Validator::make(Input::all(), Post::$rules);
+
+        if ($validator->fails())
+        {   
+            Session::flash('errorMessage', 'Edit Error: Review fields');
+
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
+        else
+        {
+            $post->title = Input::get('title');
+            $post->body = Input::get('body');
+            $post->save();
+
+            if (Input::hasFile('image') && Input::file('image')->isValid()) {
+                $post->addUploadedImage(Input::file('image'));
+                $post->save();
+            }
+
+            Session::flash('successMessage', 'Edit was successful');
+
+            return Redirect::action('PostsController@show', $post->id);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
+        Session::flash('successMessage', 'Post deleted successfully');
+
+        return Redirect::action('PostsController@index');
+    }
 }
