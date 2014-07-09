@@ -2,9 +2,6 @@
 
 Class PostsController extends \BaseController
 {
-
-
-
     public function __construct()
 {
     // call base controller constructor
@@ -13,7 +10,6 @@ Class PostsController extends \BaseController
     // run auth filter before all methods on this controller except index and show
     $this->beforeFilter('auth', array('except' => array('index', 'show')));
 }
-
 
     public function index()
     {   //search by title
@@ -35,7 +31,6 @@ Class PostsController extends \BaseController
     {
         return View::make('posts.create-edit');
     }
-
 
     public function store()
     {
@@ -62,11 +57,9 @@ Class PostsController extends \BaseController
             }
 
             session::flash('successMessage', 'Success');
-
             return Redirect::action('PostsController@index');
         }
     }   
-
 
     public function show($id)
     {
@@ -83,13 +76,11 @@ Class PostsController extends \BaseController
     public function update ($id)
     {
         $post = Post::findOrFail($id);
-
         $validator = Validator::make(Input::all(), Post::$rules);
 
         if ($validator->fails())
         {   
             Session::flash('errorMessage', 'Edit Error: Review fields');
-
             return Redirect::back()->withInput()->withErrors($validator);
         }
         else
@@ -104,7 +95,6 @@ Class PostsController extends \BaseController
             }
 
             Session::flash('successMessage', 'Edit was successful');
-
             return Redirect::action('PostsController@show', $post->id);
         }
     }
@@ -114,7 +104,6 @@ Class PostsController extends \BaseController
         $post = Post::findOrFail($id);
         $post->delete();
         Session::flash('successMessage', 'Post deleted successfully');
-
         return Redirect::action('PostsController@index');
     }
 }
