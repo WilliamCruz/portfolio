@@ -16,4 +16,10 @@ class BaseModel extends Eloquent {
 	    return $utc->setTimezone('America/Chicago');
 	}
 
+	public function convertToLocalTimezone($value)
+	{
+	    $utc = Carbon::createFromFormat($this->getDateFormat(), $value);
+	    return $utc->setTimezone('America/Chicago');
+	}
+
 }

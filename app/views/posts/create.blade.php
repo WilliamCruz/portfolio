@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Create New Post</h1>	
+    <h1 class="form-horizontal">Create New Post</h1>	
 	
 	{{ Form::open(array('action'=>'PostsController@store')) }}
 		<div>

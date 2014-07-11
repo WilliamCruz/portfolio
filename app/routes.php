@@ -11,21 +11,21 @@
 |
 */
 
-
-Route::get('/', function()
-{
-    return View::make('hello');
-});
-
+//login 
 Route::get('/login', 'HomeController@showLogin');
 Route::post('/login', 'HomeController@doLogin');
 Route::get('/logout', 'HomeController@logout');
 
-Route::resource('posts', 'PostsController');
 
-Route::get('/resume', 'HomeController@hsowResume');
+//users
+Route::resource('users', 'UsersController');
 
+//resume/portfolio
+Route::get('/Resume2014.doc.pdf', 'HomeController@showResume');
 Route::get('/portfolio', 'HomeController@showPortfolio');
+
+//blog
+Route::resource('/blog', 'PostsController');
 
 Route::get('/orm-test', function() {
 	// $posts = Post::all();
