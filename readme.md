@@ -1,5 +1,7 @@
 ## Laravel PHP Framework
 
+This is a blog project that includes my portfolio and resume. The purpose is to illustrate the use of Laravel MVC Framework. 
+
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
 [![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
